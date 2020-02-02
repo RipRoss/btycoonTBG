@@ -7,12 +7,6 @@ from sessionmanagement import Session, RedisInit
 app = Flask(__name__)
 
 
-@app.route('/api/get_keys', methods=['GET'])
-def add_user():
-    r = Session.Session('key')
-    print(r.get_keys())
-
-
 @app.route('/api/auth', methods=['POST'])
 def confirm_user():
     json_data = request.get_json()
