@@ -7,7 +7,7 @@ from sessionmanagement import Session, RedisInit
 app = Flask(__name__)
 
 
-@app.route('/api/auth', methods=['POST'])
+@app.route('/sm/auth', methods=['POST'])
 def confirm_user():
     json_data = request.get_json()
 

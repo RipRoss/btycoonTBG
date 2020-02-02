@@ -36,7 +36,6 @@ class RedisInit:
     def match_sess_key(self, sess_key):
         for key in self.conn.scan_iter(match=sess_key):
             if key:
-                print(key.decode('utf-8'))
                 return True
         return False
 
