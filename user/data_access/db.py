@@ -1,7 +1,7 @@
 import pyodbc
 import flask
 import hashlib
-from data_access import config
+from user.data_access import config
 
 
 class Database:
@@ -34,6 +34,7 @@ class Database:
             raise
         return True
 
+
 class User:
     def __init__(self, username, password, email=None):
         self.username = username
@@ -59,3 +60,6 @@ class User:
     def hash_password(self):
         pwd = hashlib.md5(self.password.encode()).hexdigest()
         return pwd
+
+    def get_username(self):
+        return self.username

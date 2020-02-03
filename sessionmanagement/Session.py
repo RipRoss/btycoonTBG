@@ -9,17 +9,28 @@ class Session(RedisInit.RedisInit):
         self.username = username
 
     def confirm_session(self):
-        val = super().match_sess_key(self.session_key)
+        val = super().match_sess_key(self.username)
         if val:
             return val
         return self.create_session()
 
+    def confirm_session_un(self):
+        """
+        function to confirm the session when the user logs in, just in case there is one. If there is, then we
+        don't need to create one. If not, it continues and makes a new one
+        """
+        value = super().get_values(self.username)
+        if value:
+            return super().get_values(self.username)
+
+        return self.create_session()
+
     def create_session(self):
         self.generate_session_key()
-        super().add_key_value(self.session_key, self.username)
+        super().add_key_value(self.username, self.session_key)
         if not self.confirm_session():
             return False
-        return True
+        return self.session_key
 
     def delete_session(self):
         pass

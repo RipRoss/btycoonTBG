@@ -1,8 +1,8 @@
 /__pycache__/
-/data_access/__pycache__/
+/user/data_access/__pycache__/
 /sessionmanagement/__pycache__/
 /user/__pycache__/
-/data_access/config/
+/user/data_access/config/
 /venv/
 /frontend/__pycache__/
 /.idea/

@@ -1,6 +1,7 @@
 import flask
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 import uuid
+import json
 from sessionmanagement import Session, RedisInit
 
 
@@ -13,10 +14,27 @@ def confirm_user():
 
     if _confirm_payload(json_data) is None:
         r = Session.Session(username=json_data["username"])
-        sess = r.create_session()
-        if not sess:
-            return Response("", status=500, mimetype='application/json')
-        return Response("", status=200, mimetype='application/json')
+
+        # confirm the session first
+        session = r.confirm_session_un()
+        if session is None:
+            sess = r.create_session()
+            if not sess:
+                return Response("", status=500, mimetype='application/json')
+
+            data = {
+                "session_key": sess,
+                "username": json_data["username"]
+            }
+            return Response(json.dumps(data), status=200, mimetype='application/json')
+        print(session)
+        print(json_data["username"])
+        data = {
+            "session_key": session,
+            "username": json_data["username"]
+        }
+        return Response(json.dumps(data), status=200, mimetype='application/json')
+
 
     if not _confirm_payload(json_data):
         return Response("", status=400, mimetype='application/json')
@@ -28,10 +46,18 @@ def confirm_user():
     return Response("", status=200, mimetype='application/json')
 
 
-@app.route('/api/clear_db', methods=['GET'])
+@app.route('/sm/clear_db', methods=['GET'])
 def clear_db():
     r = RedisInit.RedisInit()
     r.clear_db()
+    return jsonify(actioned=True)
+
+
+@app.route('/sm/get_keys')
+def get_keys():
+    r = RedisInit.RedisInit()
+    keys = r.get_keys()
+    return jsonify(keys=keys)
 
 
 def _confirm_payload(payload):

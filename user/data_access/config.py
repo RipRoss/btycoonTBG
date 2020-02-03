@@ -1,4 +1,5 @@
 import json
+import os
 
 
 def load_config(filepath):
@@ -7,5 +8,6 @@ def load_config(filepath):
 
     return data
 
+print(os.getcwd())
 
-db_config = load_config('config/settings.json')
+db_config = load_config('data_access/config/settings.json')

@@ -47,8 +47,12 @@ class RedisInit:
         """
         return self.conn.get(key.decode('utf-8'))
 
-    def get_values(self, value):
-        pass
+    def get_values(self, key):
+        value = self.conn.get(key)
+        if value:
+            return value.decode('utf-8')
+
+        return None
 
     def rename_key(self, key, new_key):
         return self.conn.rename(key, new_key)
